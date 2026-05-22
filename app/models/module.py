@@ -6,8 +6,13 @@ class Module(Base):
     __tablename__ = "modules"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    nome = Column( "nome", String)
+    nome = Column( "nome", String, nullable=False)
     url = Column( "url", String, nullable=True)
     porta = Column( "porta", Integer, nullable=True, unique=True)
     ativo = Column( "ativo", Boolean, default=True)
     criado_em = Column( "criado_em", DateTime, default=datetime.utcnow)
+
+    def __init__(self, nome, url, porta):
+        self.nome = nome
+        self.url = url
+        self.porta = porta
