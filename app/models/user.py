@@ -6,9 +6,9 @@ class User(Base):
     __tablename__ = "users"
 
     id = Column( "id", Integer, primary_key=True, autoincrement=True)
-    nome = Column( "nome", String)
+    nome = Column( "nome", String, nullable=False)
     email = Column( "email", String, unique=True, index=True)
-    senha = Column( "senha", String)
+    senha = Column( "senha", String, nullable=False)
     perfil = Column( "perfil", String)  # admin ou user
     ativo = Column( "ativo", Boolean, default=True)
     criado_em = Column( "criado_em", DateTime, default=datetime.utcnow)

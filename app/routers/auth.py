@@ -14,20 +14,14 @@ def login():
     return {"message": "User logged in successfully"}
 
 
-
+@router.post("/refresh")
+def refresh():
+    return {"message": "Token refreshed successfully"}
 
 @router.get("/verify")
 def verify():
     return {"message": "User verified successfully"}
 
-
-
-@router.get("/private")
-def private():
-    return {"message": "This is a private route"}
-
-
-
-@router.post("/refresh")
-def refresh():
-    return {"message": "Token refreshed successfully"}
+# @router.get("/private")
+# def private():
+#     return {"message": "This is a private route"}
