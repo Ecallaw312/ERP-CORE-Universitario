@@ -1,7 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException
-from core.dependencia import get_db
-from models.user import User
-from main import bcrypt_context
+from app.core.dependencia import get_db
+from app.models.user import User
+from app.core.security import bcrypt_context
+
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 

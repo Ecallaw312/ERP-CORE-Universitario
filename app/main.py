@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+
 from passlib.context import CryptContext
 from dotenv import load_dotenv
 import os
@@ -8,7 +9,6 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 
 app = FastAPI()
 
-becrypt_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 from app.routers import auth, health, module, users
 
