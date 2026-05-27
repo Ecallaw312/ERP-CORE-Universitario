@@ -13,10 +13,8 @@ class User(Base):
     ativo = Column( "ativo", Boolean, default=True)
     criado_em = Column( "criado_em", DateTime, default=datetime.utcnow)
 
-    def __init__(self, nome, email, senha, perfil="user"):
+    def __init__(self, nome, email, senha, perfil):
         self.nome = nome
         self.email = email
         self.senha = senha
         self.perfil = perfil
-        
-        
