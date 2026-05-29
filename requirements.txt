@@ -34,3 +34,6 @@ requests==2.34.2
 # Extras (logs coloridos, syntax highlight, etc.)
 colorama==0.4.6
 Pygments==2.20.0
+
+
+python-multipart
