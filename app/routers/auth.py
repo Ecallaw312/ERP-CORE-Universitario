@@ -81,7 +81,7 @@ async def refresh_token(usuario: User_db = Depends(verificar_token)):
 @router.post("/verify")
 async def verify_token(usuario: User_db = Depends(verificar_token)):
     return {
-        "menssagem": "Token válido",
+        "mensagem": "Token válido",
         "user": {
             "nome": usuario.nome, 
             "perfil": usuario.perfil

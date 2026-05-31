@@ -279,7 +279,7 @@ Para autenticar:
 
 * `POST /auth/register`
 * `POST /auth/login`
-* `GET /auth/verify`
+* `POST /auth/verify`
 * `POST /auth/refresh`
 
 ## Usuários
