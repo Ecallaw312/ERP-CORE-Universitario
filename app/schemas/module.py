@@ -1,20 +1,9 @@
-from pydantic import BaseModel, Field
-
+from pydantic import BaseModel, ConfigDict, Field
+ 
 class Modulo(BaseModel):
-    nome: str = Field(
-        ...,
-        example="Financeiro"
-    )
-
-    url: str = Field(
-        ...,
-        example="http://localhost:8001"
-    )
-
-    porta: int = Field(
-        ...,
-        example=8001
-    )
-
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
+ 
+    nome: str = Field(..., json_schema_extra={"example": "Financeiro"})
+    url: str = Field(..., json_schema_extra={"example": "http://localhost:8001"})
+    porta: int = Field(..., json_schema_extra={"example": 8001})
+ 

@@ -1,58 +1,33 @@
-# 📦 ERP CORE - Sistema ERP Distribuído
+# 📦 ERP CORE — Sistema ERP Distribuído
 
-## 📌 Sobre o Projeto
+Disciplina de Sistemas Distribuídos — UNILAGO 2026
 
-Este projeto foi desenvolvido para a disciplina de Sistemas Distribuídos com o objetivo de criar o núcleo principal (CORE) de um sistema ERP distribuído.
-
-O CORE é responsável por:
-
-* autenticação de usuários
-* autorização e controle de acesso
-* gerenciamento de módulos
-* monitoramento dos serviços conectados
-* centralização da segurança da aplicação
-
-O sistema foi desenvolvido utilizando FastAPI e arquitetura baseada em microsserviços.
+O **CORE** é o serviço central de um ERP distribuído baseado em microsserviços. Ele é responsável por autenticar usuários, controlar permissões, gerenciar módulos e monitorar a disponibilidade dos serviços conectados.
 
 ---
 
-# 🚀 Tecnologias Utilizadas
+## 🚀 Tecnologias
 
-* Python 3.11+
-* FastAPI
-* SQLAlchemy
-* SQLite
-* JWT Authentication
-* OAuth2
-* Swagger/OpenAPI
-* Passlib (bcrypt)
-* Pytest
-* Uvicorn
-* Alembic
-
+| Camada | Tecnologia |
+|--------|-----------|
+| Framework | FastAPI + Uvicorn |
+| Banco de dados | SQLAlchemy + SQLite (dev) / PostgreSQL (produção) |
+| Migrações | Alembic |
+| Autenticação | JWT (python-jose) + OAuth2 |
+| Segurança | Passlib + bcrypt |
+| Testes | Pytest + pytest-cov + httpx (TestClient) |
+| Validação | Pydantic v2 |
 
 ---
 
-# 🏗️ Arquitetura do Projeto
+## 📁 Estrutura do Projeto
 
-O sistema segue uma arquitetura distribuída baseada em microsserviços.
-
-O CORE funciona como serviço principal do ERP, sendo responsável pela autenticação e comunicação entre os módulos do sistema.
-
-Os módulos podem se registrar no CORE e serem monitorados automaticamente através do sistema de Health Check.
-
----
-
-# 📁 Estrutura do Projeto
-
-```bash
+```
 app/
 ├── core/
-│   ├── admin.py
-│   ├── auth.py
-│   ├── database.py
-│   ├── deps.py
-│   └── security.py
+│   ├── database.py       # Engine e Base SQLAlchemy
+│   ├── dependencia.py    # get_db e verificar_token
+│   └── security.py       # JWT, bcrypt, OAuth2
 │
 ├── models/
 │   ├── user.py
@@ -61,318 +36,205 @@ app/
 │
 ├── schemas/
 │   ├── user.py
-│   ├── auth.py
+│   ├── login.py
 │   └── module.py
 │
 ├── routers/
-│   ├── auth.py
-│   ├── users.py
-│   ├── module.py
-│   └── health.py
+│   ├── auth.py           # /auth/*
+│   ├── users.py          # /users/*
+│   ├── module.py         # /modulos/*
+│   └── health.py         # /health
 │
 └── main.py
 
-tests/
-├── test_admin.py
+teste/
+├── conftest.py           # Banco em memória, fixtures
 ├── test_auth.py
-├── test_health.py
-└── test_module.py
+├── test_admin.py
+└── test_health.py
+
+alembic/                  # Migrações de banco
+seed.py                   # Dados iniciais
+AUTH_CONTRACT.md          # Contrato de autenticação para frontend e módulos
 ```
 
 ---
 
-# 🔐 Funcionalidades Implementadas
+## ⚙️ Como Executar
 
-## 👤 Usuários
-
-* Cadastro de usuários
-* Login com JWT
-* Controle de acesso por perfil
-* Ativação e desativação de usuários
-* Rotas protegidas
-
-## 🔑 Autenticação
-
-* OAuth2 Password Flow
-* JWT Access Token
-* Refresh Token
-* Verificação de sessão
-* Proteção de endpoints
-
-## 🧩 Módulos
-
-* Registro de módulos
-* Listagem de módulos
-* Integração entre serviços
-
-## 🩺 Health Check
-
-* Monitoramento dos módulos cadastrados
-* Verificação automática de status
-* Serviços online/offline
-* Health Check agregado do sistema
-
-## 🛡️ Segurança
-
-* Senhas criptografadas com bcrypt
-* Autenticação JWT
-* Controle de permissões
-* Rotas protegidas com Depends
-
----
-
-# 📖 Documentação da API
-
-Após iniciar o servidor, a documentação pode ser acessada em:
-
-```txt
-http://127.0.0.1:8000/docs
-```
-
-A documentação foi gerada automaticamente utilizando Swagger UI.
-
----
-
-# ⚙️ Como Executar o Projeto
-
-## 1️⃣ Clonar o repositório
+### 1. Clonar o repositório
 
 ```bash
-git clone https://github.com/g4brielmendes/erp-core.git
+git clone https://github.com/Ecallaw312/ERP-CORE-Universitario.git
+cd erp-core
 ```
 
----
-
-## 2️⃣ Entrar na pasta do projeto
-
-```bash
-cd ERP-Core
-```
-
----
-
-## 3️⃣ Criar ambiente virtual
+### 2. Criar e ativar ambiente virtual
 
 ```bash
 python -m venv venv
-```
 
-### Ativar ambiente virtual
-
-### Windows
-
-```bash
+# Windows
 venv\Scripts\activate
-```
 
-### Linux/Mac
-
-```bash
+# Linux/Mac
 source venv/bin/activate
 ```
 
----
-
-## 4️⃣ Instalar dependências
+### 3. Instalar dependências
 
 ```bash
 pip install -r requirements.txt
 ```
 
----
+### 4. Configurar variáveis de ambiente
 
-## 5️⃣ Configurar variáveis de ambiente
-
-Criar um arquivo `.env` na raiz do projeto:
+Crie um arquivo `.env` na raiz:
 
 ```env
 SECRET_KEY=erp_core_super_secret_key
-
 ALGORITHM=HS256
-
 ACCESS_TOKEN_EXPIRE_MINUTES=60
-
 REFRESH_TOKEN_EXPIRE_DAYS=7
-```
-### 🗄️ Configuração do Banco de Dados
-
-O projeto suporta **dois bancos de dados**:
-
-- **SQLite** → usado para testes e desenvolvimento local  
-- **PostgreSQL** → recomendado para produção
-
-No arquivo `.env`, adicione:
-Para testes e desenvolvimentos:
-```env
 DATABASE_URL=sqlite:///./core.db
 ```
-Para Produção:
+
+Para produção, substitua `DATABASE_URL` por:
 ```env
 DATABASE_URL=postgresql://usuario:senha@localhost:5432/erp_core
 ```
-### ⚙️ Executando Migrações
-### SQLite (testes):
-  
-Windows PowerShell:
-```env
+
+### 5. Executar migrações
+
+**Windows PowerShell:**
+```powershell
 $env:DATABASE_URL = "sqlite:///./core.db"
 alembic upgrade head
 ```
-CMD:
-```env
+
+**Windows CMD:**
+```cmd
 set DATABASE_URL=sqlite:///./core.db
 alembic upgrade head
 ```
-### PostgreSQL (produção)
-```env
-$env:DATABASE_URL = "postgresql://usuario:senha@localhost:5432/erp_core"
-alembic upgrade head
-```
----
 
-## 6️⃣ Executar aplicação
-
+**Linux/Mac:**
 ```bash
-uvicorn app.main:app --reload
+DATABASE_URL=sqlite:///./core.db alembic upgrade head
 ```
 
----
-
-## 7️⃣ Executar Seed
-
-Para criar usuários e módulos automaticamente:
+### 6. Popular banco com dados iniciais (opcional)
 
 ```bash
 python seed.py
 ```
 
-Usuários padrão:
+Usuários criados:
 
-```txt
-Admin:
-admin@erp.com
-12345
+| Perfil | E-mail | Senha |
+|--------|--------|-------|
+| admin | admin@erp.com | 12345 |
+| user | user@erp.com | 12345 |
 
-Usuário:
-user@erp.com
-12345
+### 7. Iniciar o servidor
+
+```bash
+uvicorn app.main:app --reload
 ```
 
----
-
-# 🔐 Autenticação
-
-A API utiliza autenticação JWT com OAuth2.
-
-Para autenticar:
-
-1. Acesse `/docs`
-2. Utilize o endpoint `/auth/login`
-3. Clique em Authorize
-4. Informe usuário e senha
+Acesse a documentação interativa em: `http://127.0.0.1:8000/docs`
 
 ---
 
-# 📌 Principais Endpoints
+## 📌 Endpoints
 
-## Auth
+### Auth
+| Método | Rota | Descrição | Auth |
+|--------|------|-----------|------|
+| POST | `/auth/register` | Cadastrar usuário | ❌ |
+| POST | `/auth/login` | Login (retorna JWT) | ❌ |
+| POST | `/auth/verify` | Verificar token | ✅ |
+| POST | `/auth/refresh` | Renovar access token | ✅ |
 
-* `POST /auth/register`
-* `POST /auth/login`
-* `POST /auth/verify`
-* `POST /auth/refresh`
+### Usuários
+| Método | Rota | Descrição | Perfil |
+|--------|------|-----------|--------|
+| GET | `/users` | Listar usuários | admin |
+| PATCH | `/users/{id}/status` | Ativar/desativar usuário | admin |
 
-## Usuários
+### Módulos
+| Método | Rota | Descrição | Perfil |
+|--------|------|-----------|--------|
+| POST | `/modulos/create` | Registrar módulo | admin |
+| GET | `/modulos/list` | Listar módulos | admin |
 
-* `GET /users`
-* `PATCH /users/{id}/status`
-
-## Módulos
-
-* `POST /modules`
-* `GET /modules`
-
-## Sistema
-
-* `GET /health`
+### Sistema
+| Método | Rota | Descrição | Auth |
+|--------|------|-----------|------|
+| GET | `/health` | Status dos serviços | ❌ |
 
 ---
 
-# 🩺 Exemplo de Health Check
+## 🩺 Health Check
+
+O endpoint `/health` verifica automaticamente a disponibilidade de todos os módulos cadastrados:
 
 ```json
 {
   "status": "ok",
   "services": {
     "core": "online",
-    "financeiro": "offline"
+    "financeiro": "online",
+    "estoque": "offline"
   }
 }
 ```
 
+`status` retorna `"ok"` quando todos os serviços estão online, ou `"degraded"` quando algum está inacessível.
+
 ---
 
-# 🧪 Testes Automatizados
-
-Os testes foram desenvolvidos utilizando Pytest e FastAPI TestClient.
-
-## Executar testes
+## 🧪 Testes
 
 ```bash
+# Executar todos os testes
 python -m pytest
+
+# Com relatório de cobertura
+python -m pytest --cov=app --cov-report=term-missing
 ```
 
-## Executar cobertura de testes
+**Cobertura atual: 93%**
 
-```bash
-python -m pytest --cov=app
-```
+Os testes usam banco SQLite em memória — nenhuma configuração adicional necessária.
 
 ---
 
-# 📊 Cobertura Atual
+## 🌐 CORS
 
-```txt
-87% de cobertura de testes
+Configurado para aceitar requisições do frontend em:
 ```
-
----
-
-# 🌐 CORS
-
-O sistema está configurado para permitir integração com frontend local:
-
-```txt
 http://localhost:3000
 ```
 
 ---
 
-# 🔄 Fluxo Básico do Sistema
+## 🔐 Contrato de Autenticação
 
-1. Usuário realiza login
-2. CORE gera token JWT
-3. Usuário acessa rotas protegidas
-4. Módulos se registram no CORE
-5. CORE monitora disponibilidade dos serviços
-6. Sistema retorna status online/offline dos módulos
+Consulte o arquivo [`AUTH_CONTRACT.md`](./AUTH_CONTRACT.md) para a documentação completa de como o frontend e os outros módulos devem se integrar com o CORE.
 
 ---
 
-# 👨‍💻 Integrantes
-* Wallace Souza
-* Wallison Souza
-* Gabriel Mendes
-* Felipe Magalhães
-* Pedro Neto
----
+## 👨‍💻 Integrantes
 
-# 📌 Observações
-
-Este projeto possui fins acadêmicos e foi desenvolvido para estudo de arquitetura distribuída, autenticação JWT e integração entre microsserviços utilizando FastAPI.
+- Wallace Souza
+- Wallison Souza
+- Gabriel Mendes
+- Felipe Magalhães
+- Pedro Neto
 
 ---
 
-# 📄 Licença
+## 📄 Licença
 
-Projeto de uso acadêmico.
+MIT License — veja o arquivo [LICENSE](./LICENSE) para detalhes.

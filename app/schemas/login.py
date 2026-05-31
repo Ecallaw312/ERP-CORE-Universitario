@@ -1,15 +1,7 @@
-from pydantic import BaseModel, Field
-
+from pydantic import BaseModel, ConfigDict, Field
+ 
 class Login(BaseModel):
-    email: str = Field(
-        ...,
-        example="admin@email.com"
-    )
-
-    senha: str = Field(
-        ...,
-        example="123456"
-    )
-
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
+ 
+    email: str = Field(..., json_schema_extra={"example": "admin@email.com"})
+    senha: str = Field(..., json_schema_extra={"example": "123456"})
