@@ -131,10 +131,16 @@ python seed.py
 
 Usuários criados:
 
-| Perfil | E-mail | Senha |
-|--------|--------|-------|
 | admin | admin@erp.com | 12345 |
-| user | user@erp.com | 12345 |
+| user  | user@erp.com  | 12345 |
+
+Módulos criados:
+
+| Nome       | Porta |
+|------------|-------|
+| Financeiro | 8001  |
+| Estoque    | 8002  |
+| RH         | 8003  |
 
 ### 7. Iniciar o servidor
 
@@ -234,7 +240,3 @@ Consulte o arquivo [`AUTH_CONTRACT.md`](./AUTH_CONTRACT.md) para a documentaçã
 - Pedro Neto
 
 ---
-
-## 📄 Licença
-
-MIT License — veja o arquivo [LICENSE](./LICENSE) para detalhes.
