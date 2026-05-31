@@ -131,7 +131,7 @@ python seed.py
 
 Usuários criados:
 
-| Nome       | Email | Senha  |
+| Perfil     | Email | Senha  |
 |------------|-------|-------|
 | admin | admin@erp.com | 12345 |
 | user  | user@erp.com  | 12345 |
