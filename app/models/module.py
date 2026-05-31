@@ -2,8 +2,8 @@ from sqlalchemy import Column, Integer, String, Boolean, DateTime
 from datetime import datetime
 from app.core.database import Base
 
-class Module(Base):
-    __tablename__ = "modules"
+class Modulo_db(Base):
+    __tablename__ = "modulo"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     nome = Column( "nome", String, nullable=False)

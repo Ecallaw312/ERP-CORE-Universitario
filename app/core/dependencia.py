@@ -1,9 +1,10 @@
 from app.core.database import db
 from sqlalchemy.orm import sessionmaker, Session
-from jose import JWTError, jwt
+from jose import JWTError, jwt, ExpiredSignatureError
 from app.core.security import SECRET_KEY, ALGORITHM, oauth2_scheme
 from fastapi import Depends, HTTPException
-from app.models.user import User
+from app.models.user import User_db
+
 
 SessionLocal = sessionmaker(bind=db, autoflush=False, autocommit=False)
 
@@ -22,10 +23,12 @@ def verificar_token(token: str = Depends(oauth2_scheme), session: Session = Depe
         if iduser is None:
             raise JWTError()
         
+    except ExpiredSignatureError:
+        raise HTTPException(status_code=401, detail="Token expirado")        
     except JWTError:    
         raise HTTPException(status_code=401, detail="Token inválido")
     
-    usuario = session.query(User).filter(User.id == iduser).first()
+    usuario = session.query(User_db).filter(User_db.id == iduser).first()
     if not usuario:
         raise HTTPException(status_code=401, detail="Acesso invalido") 
     return usuario      
