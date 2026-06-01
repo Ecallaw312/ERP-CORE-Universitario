@@ -1,5 +1,5 @@
 {
-  "apt": {
-    "packages": ["libpq-dev"]
+  "deploy": {
+    "aptPackages": ["libpq-dev"]
   }
 }
