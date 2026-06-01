@@ -19,9 +19,10 @@ def get_db():
 def verificar_token(token: str = Depends(oauth2_scheme), session: Session = Depends(get_db)):
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        iduser = int(payload.get("sub"))
+        iduser = payload.get("sub")
         if iduser is None:
-            raise JWTError()
+             raise JWTError()
+        iduser = int(iduser)
         
     except ExpiredSignatureError:
         raise HTTPException(status_code=401, detail="Token expirado")        

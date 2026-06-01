@@ -113,3 +113,48 @@ def test_refresh_token_valido(client, headers_user):
 def test_refresh_token_invalido(client):
     resp = client.post("/auth/refresh", headers={"Authorization": "Bearer lixo"})
     assert resp.status_code == 401
+
+
+def test_login_formulario_sucesso(client):
+    client.post("/auth/register", json={
+        "nome": "Form User",
+        "email": "form@teste.com",
+        "senha": "senha123",
+        "perfil": "user"
+    })
+    resp = client.post("/auth/login_formulario", data={
+        "username": "form@teste.com",
+        "password": "senha123"
+    })
+    assert resp.status_code == 200
+    assert "access_token" in resp.json()
+
+
+def test_login_formulario_email_inexistente(client):
+    resp = client.post("/auth/login_formulario", data={
+        "username": "naoexiste@teste.com",
+        "password": "qualquer"
+    })
+    assert resp.status_code == 403
+
+
+def test_login_formulario_senha_errada(client):
+    client.post("/auth/register", json={
+        "nome": "Form User2",
+        "email": "form2@teste.com",
+        "senha": "senha123",
+        "perfil": "user"
+    })
+    resp = client.post("/auth/login_formulario", data={
+        "username": "form2@teste.com",
+        "password": "errada"
+    })
+    assert resp.status_code == 403
+
+
+def test_token_sem_sub(client):
+    from app.core.security import SECRET_KEY, ALGORITHM
+    from jose import jwt
+    token_sem_sub = jwt.encode({"perfil": "user"}, SECRET_KEY, algorithm=ALGORITHM)
+    resp = client.post("/auth/verify", headers={"Authorization": f"Bearer {token_sem_sub}"})
+    assert resp.status_code == 401

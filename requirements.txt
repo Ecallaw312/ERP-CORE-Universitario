@@ -5,6 +5,7 @@ uvicorn==0.47.0
 # Banco de dados
 SQLAlchemy==2.0.49
 alembic==1.18.4
+psycopg2-binary==2.9.9
 
 # Segurança
 passlib[bcrypt]==1.7.4
